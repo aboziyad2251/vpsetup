@@ -1,1 +1,28 @@
+services: version: '3.8'
 
+services:
+  # 1. Web Server Service
+  web:
+    image: nginx:latest
+    container_name: vpsetup_nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: unless-stopped
+    volumes:
+      - ./html:/usr/share/nginx/html
+
+  # 2. Docker Management Service
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: vpsetup_portainer
+    ports:
+      - "9000:9000"
+      - "8000:8000"
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+
+volumes:
+  portainer_data:
